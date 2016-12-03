@@ -6,15 +6,36 @@
 .searchButtonImg {
    width: 20px;
    height: 20px;
-   border-width: 1px;
-   border-color: white;
-   border-style: none none solid none;
+   opacity: 0.3;
 }
 
 .searchButtonImg:hover {
-	border-color: orange;
+   opacity: 1;
 }
 
 .separator {
-   height: 30px;
+   height: 12px;
+}
+
+.label {
+   cursor: pointer;
+}
+
+.queryDivIcons {
+   width: 20px;
+   height: 20px;
+}
+
+#queryDiv {
+   background-color: #fcf8e3;
+   padding: 10px 10px 10px 10px;
+   margin-bottom: 40px;
+}
+
+#queryImg {
+}
+
+#queryImg {
+   height: 100px;
+   width: 100px;
 }

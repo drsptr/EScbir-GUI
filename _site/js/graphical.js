@@ -9,6 +9,28 @@ $("ul.nav.navbar-nav a").click(  function() {
                                     $(this).parent().attr("class", "active");
                                  }
                               );
+
+
+/* It sets the color of the span according to the current cluster's state.
+ */
+function setClusterState(state) {
+   span = $("#clusterStateSpan");
+   
+   span.removeAttr("class");
+   
+   switch(state) {
+      case "Green":
+         span.attr("class", "label label-success");
+         break;
+      case "Yellow":
+         span.attr("class", "label label-warning");
+         break;
+      case "Red":
+         span.attr("class", "label label-danger");
+   }
+   
+   span.text(state);
+}
                               
 
 

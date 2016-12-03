@@ -44,3 +44,12 @@ function queryStringSearch() {
 
 var esm = new ESManager();
 esm.connect(HOST, PORT);
+
+/*
+<div id="queryDiv">
+            <span id="queryImg"><img src="http://farm5.staticflickr.com/4137/4888431878_5470a5578b.jpg" alt="query image"></span>
+            <span>Searching</span>
+            <span id="queryText">'query text'</span>
+            <span id="queryTime">in 0.255s</span>
+         </div>
+*/
