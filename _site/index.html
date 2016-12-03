@@ -1,0 +1,47 @@
+<!doctype html> 
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta charset="utf-8">
+      <meta name="author" content="Pietro De Rosa">
+      <title>EScbir</title>
+      <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+      <link href="css/index.css" rel="stylesheet">
+      <script type="text/javascript" src="js/libs/jquery/jquery-3.1.1.min.js"></script>
+      <script type="text/javascript" src="js/libs/bootstrap/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/libs/elasticsearch-js/elasticsearch.jquery.min.js"></script>
+      <script type="text/javascript" src="js/libs/elasticsearch-js/elasticsearch.min.js"></script>
+      <script type="text/javascript" src="js/libs/json/json2.js"></script>
+      <script type="text/javascript" src="js/EScbir.js"></script>
+   </head>
+   <body>
+      <div id="mainDiv" class="container">
+         <!-- Navigation Bar-->
+         <nav class="navbar navbar-default">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+               </button>
+               <a href="#" class="navbar-brand"><img src="http://www.tiragraffi.it/wp-content/uploads/2014/06/LEGO_Logo.jpg" width="30px" height="30px" alt="logo" class="img-circle"></a>
+            </div>
+            <div class="collapse navbar-collapse" id="mainNavBar">
+               <ul class="nav navbar-nav">
+                  <li><a href="#">Visual search</a></li>
+                  <li><a href="#">Textual search</a></li>
+                  <li class="active"><a href="#">Random search</a></li>
+               </ul>
+            </div>
+         </nav>
+         <!-- Results -->
+         <div id="resultsDiv">
+            <div id="resultImagesDiv">
+            </div>
+         </div>
+      </div>
+      <input type="button" onclick="clearResults()" value="search">
+      <script type="text/javascript" src="js/graphical.js"></script>
+   <body>
+<html>
