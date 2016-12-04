@@ -21,21 +21,21 @@
    cursor: pointer;
 }
 
-.queryDivIcons {
-   width: 20px;
-   height: 20px;
-}
 
 #queryDiv {
    background-color: #fcf8e3;
    padding: 10px 10px 10px 10px;
    margin-bottom: 40px;
+   display: none;
 }
 
-#queryImg {
+.queryDivIcons {
+   width: 20px;
+   height: 20px;
+   margin-right: 10px;
+   margin-bottom: 5px;
 }
 
-#queryImg {
-   height: 100px;
-   width: 100px;
+#queryDiv span {
+   cursor: default;
 }

@@ -14,7 +14,7 @@ $("ul.nav.navbar-nav a").click(  function() {
 /* It sets the color of the span according to the current cluster's state.
  */
 function setClusterState(state) {
-   span = $("#clusterStateSpan");
+   var span = $("#clusterStateSpan");
    
    span.removeAttr("class");
    
@@ -51,7 +51,7 @@ var COLUMNS = 6;        // # of columns in the grid (max 12)
  * to the results' grid. 
  */      
 function addImageElement(uri) {
-   imgId=uri.split("/").pop().split("_")[0];
+   var imgId=uri.split("/").pop().split("_")[0];
 
    $(".row:last-child").append(  "<div class=\"col-" + DISPLAY + "-" + Math.floor(12/COLUMNS) + "\">" +
                                  "   <div>" +
@@ -93,7 +93,7 @@ function clearResults() {
 /* Given an array containing a set of URI, i.e. the result set, it fills the results' grid with all
  * the elements belonging to the set. It is used when a visual, a random or a textual search is performed.
  */
-var arrayImg = new Array();
+var arrayImg = new Array();   //DELETE
    arrayImg[0] = "http://farm5.staticflickr.com/4137/4888431878_5470a5578b.jpg";
    arrayImg[1] = "http://farm3.staticflickr.com/2872/13266135434_c2d719f79c.jpg";
    arrayImg[2] = "http://farm9.staticflickr.com/8231/8570711349_8c98474b68.jpg";
@@ -113,7 +113,7 @@ var arrayImg = new Array();
    arrayImg[14] = "http://farm5.staticflickr.com/4150/4994274310_b5b1bd0f3c.jpg";
    arrayImg[15] = "http://farm5.staticflickr.com/4126/5063982949_c121769ab4.jpg"; 
  
-function showResults(imgSet) {
+function printResults(imgSet) {
    addRow();
    for(i=0; i<imgSet.length; i++) {
       if(i!=0 && i%COLUMNS==0) {
@@ -124,4 +124,56 @@ function showResults(imgSet) {
    }
 }
 
-showResults(arrayImg);
+printResults(arrayImg);  // DELETE
+
+
+
+
+
+/////////////////////////////
+//    QUERY INFO HANDLER   //
+/////////////////////////////
+var queryDivHTML =   "<div title=\"Query type\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/search.png\" alt=\"type icon\">" +
+                     "  <span id=\"queryType\">&nbsp;</span>" +
+                     "</div>" +
+                     "<div title=\"Query\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/query.png\" alt=\"query icon\">" +
+                     "  <a id=\"queryImgLink\" href=\"#\" target=\"_blank\">&nbsp;</a>" +
+                     "  <span id=\"queryTxt\">&nbsp;</span>" +
+                     "</div>" +
+                     "<div title=\"Searching time\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/time.png\" alt=\"time icon\">" +
+                     "  <span id=\"queryTime\">-</span>" +
+                     "</div>" +
+                     "<div title=\"Number of results\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/results.png\" alt=\"result icon\">" +
+                     "  <span id=\"queryNumberOfResults\">-</span>" +
+                     "</div>"; 
+ 
+/* It prints on the screen the query div, which contains, in order:
+ *    1) the query type (visual or textual)
+ *    2) the input query (link to the image or text)
+ *    3) the query execution time
+ *    4) the number of results.
+ */
+function printQueryDiv() {
+   var queryDiv = $("#queryDiv");
+   queryDiv.append(queryDivHTML);
+   queryDiv.css("display", "block");
+}
+
+/* It clears the query div.
+ */
+function clearQueryDiv() {
+   var queryDiv = $("#queryDiv");
+   queryDiv.css("display", "none");
+   queryDiv.empty();
+}
+
+/* It set the query div field with the given value.
+ */
+function setQueryDivField(field, value) {
+   if(field == "queryImgLink") $(field).attr("href", value);
+   $(field).text(value);
+}

@@ -6,14 +6,13 @@
       <meta charset="utf-8">
       <meta name="author" content="Pietro De Rosa">
       <title>EScbir</title>
-      <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+      <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
       <link href="css/index.css" rel="stylesheet">
-      <script type="text/javascript" src="js/libs/jquery/jquery-3.1.1.min.js"></script>
-      <script type="text/javascript" src="js/libs/bootstrap/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/libs/elasticsearch-js/elasticsearch.jquery.min.js"></script>
-      <script type="text/javascript" src="js/libs/elasticsearch-js/elasticsearch.min.js"></script>
-      <script type="text/javascript" src="js/libs/json/json2.js"></script>
-      <script type="text/javascript" src="js/EScbir.js"></script>
+      <script type="text/javascript" src="libs/jquery/jquery-3.1.1.min.js"></script>
+      <script type="text/javascript" src="libs/bootstrap/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="libs/elasticsearch-js/elasticsearch.jquery.min.js"></script>
+      <script type="text/javascript" src="libs/elasticsearch-js/elasticsearch.min.js"></script>
+      <script type="text/javascript" src="libs/json/json2.js"></script>
    </head>
    <body>
       <div id="mainDiv" class="container">
@@ -29,31 +28,15 @@
             </div>
             <div class="collapse navbar-collapse" id="mainNavBar">
                <ul class="nav navbar-nav">
-                  <li><a href="#">Visual search</a></li>
-                  <li><a href="#">Textual search</a></li>
-                  <li class="active"><a href="#">Random search</a></li>
+                  <li><a id="visualSearchButton" href="#">Visual search</a></li>
+                  <li><a id="textualSearchButton" href="#">Textual search</a></li>
+                  <li class="active"><a id="randomSearchButton" href="#">Random search</a></li>
                </ul>
                <div class="navbar-right" title="Cluster's state"><span id="clusterStateSpan" class="label label-success">Green</span></div>
             </div>
          </nav>
          <!-- Query -->
          <div id="queryDiv">
-             <div title="Query type">
-               <img class="queryDivIcons" src="img/search.png" alt="type icon">
-               <span id="queryTypeSpan">Visual</span>
-            </div>
-            <div title="Query">
-               <img class="queryDivIcons" src="img/query.png" alt="query icon">
-               <a href="http://farm5.staticflickr.com/4137/4888431878_5470a5578b.jpg" target="_blank">http://farm5.staticflickr.com/4137/4888431878_5470a5578b.jpg</a>
-            </div>
-            <div title="Searching time">
-               <img class="queryDivIcons" src="img/time.png" alt="time icon">
-               <span id="queryTime">0.255s</span>
-            </div>
-            <div title="Number of results">
-               <img class="queryDivIcons" src="img/results.png" alt="result icon">
-               <span id="queryTime">100</span>
-            </div>
          </div>
          <!-- Results -->
          <div id="resultsDiv">
@@ -61,7 +44,8 @@
             </div>
          </div>
       </div>
-      <input type="button" onclick="setClusterState('Yellow')" value="search">
+      <input type="button" onclick="printQueryDiv()" value="search">
       <script type="text/javascript" src="js/graphical.js"></script>
+      <script type="text/javascript" src="js/EScbir.js"></script>
    <body>
 <html>
