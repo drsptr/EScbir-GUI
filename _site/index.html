@@ -13,6 +13,7 @@
       <script type="text/javascript" src="libs/elasticsearch-js/elasticsearch.jquery.min.js"></script>
       <script type="text/javascript" src="libs/elasticsearch-js/elasticsearch.min.js"></script>
       <script type="text/javascript" src="libs/json/json2.js"></script>
+      <script type="text/javascript" src="js/utilities.js"></script>
    </head>
    <body>
       <div id="mainDiv" class="container">
@@ -43,8 +44,14 @@
             <div id="resultImagesDiv">
             </div>
          </div>
+         <!-- Loading Animation -->
+         <div id="loadingAnimationDiv">
+            <img src="img/loading.gif" alt="loading image">
+         </div>
       </div>
-      <input type="button" onclick="printQueryDiv()" value="search">
+      <div id="respDiv"></div>
+      <input type="button" onclick="showLoadingAnimation()" value="show">
+      <input type="button" onclick="hideLoadingAnimation()" value="hide">
       <script type="text/javascript" src="js/graphical.js"></script>
       <script type="text/javascript" src="js/EScbir.js"></script>
    <body>

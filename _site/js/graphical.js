@@ -1,5 +1,5 @@
 /////////////////////////////
-//          GENERAL        //
+//         STARTUP         //
 /////////////////////////////
 /* It sets the just clicked item on the navbar in the active state. When the user clicks on an item
  * on the navbar, its color becames darker.
@@ -11,6 +11,12 @@ $("ul.nav.navbar-nav a").click(  function() {
                               );
 
 
+
+
+
+/////////////////////////////
+//          GENERAL        //
+/////////////////////////////
 /* It sets the color of the span according to the current cluster's state.
  */
 function setClusterState(state) {
@@ -19,13 +25,13 @@ function setClusterState(state) {
    span.removeAttr("class");
    
    switch(state) {
-      case "Green":
+      case "green":
          span.attr("class", "label label-success");
          break;
-      case "Yellow":
+      case "yellow":
          span.attr("class", "label label-warning");
          break;
-      case "Red":
+      case "red":
          span.attr("class", "label label-danger");
    }
    
@@ -36,6 +42,61 @@ function setClusterState(state) {
 
 
                               
+/////////////////////////////
+//    QUERY INFO HANDLER   //
+/////////////////////////////
+var queryDivHTML =   "<div title=\"Query type\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/search.png\" alt=\"type icon\">" +
+                     "  <span id=\"queryType\">&nbsp;</span>" +
+                     "</div>" +
+                     "<div title=\"Query\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/query.png\" alt=\"query icon\">" +
+                     "  <a id=\"queryImgLink\" href=\"#\" target=\"_blank\">&nbsp;</a>" +
+                     "  <span id=\"queryTxt\">&nbsp;</span>" +
+                     "</div>" +
+                     "<div title=\"Searching time\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/time.png\" alt=\"time icon\">" +
+                     "  <span id=\"queryTime\">-</span>" +
+                     "</div>" +
+                     "<div title=\"Number of results\">" +
+                     "  <img class=\"queryDivIcons\" src=\"img/results.png\" alt=\"result icon\">" +
+                     "  <span id=\"queryNumberOfResults\">-</span>" +
+                     "</div>"; 
+ 
+ 
+/* It prints on the screen the query div, which contains, in order:
+ *    1) the query type (visual or textual)
+ *    2) the input query (link to the image or text)
+ *    3) the query execution time
+ *    4) the number of results.
+ */
+function printQueryDiv() {
+   var queryDiv = $("#queryDiv");
+   queryDiv.append(queryDivHTML);
+   queryDiv.css("display", "block");
+}
+
+
+/* It clears the query div.
+ */
+function clearQueryDiv() {
+   var queryDiv = $("#queryDiv");
+   queryDiv.css("display", "none");
+   queryDiv.empty();
+}
+
+
+/* It set the query div field with the given value.
+ */
+function setQueryDivField(field, value) {
+   if(field == "queryImgLink") $(field).attr("href", value);
+   $(field).text(value);
+}
+
+
+
+
+
 /////////////////////////////
 //      GRID HANDLER       //
 /////////////////////////////
@@ -58,7 +119,7 @@ function addImageElement(uri) {
                                  "      <img class=\"resultImg\" src=\"" + uri + "\">" +
                                  "   </div>" +
                                  "   <div>" +
-                                 "      <a href=\"#\" title=\"Visual similarity search\" onclick=\"alert('" + imgId + "')\"><img class=\"searchButtonImg\" src=\"img/search.png\"></a>" +
+                                 "      <a href=\"#\" title=\"Visual similarity search\" onclick=\"visualSearch('" + imgId + "')\"><img class=\"searchButtonImg\" src=\"img/search.png\"></a>" +
                                  "      <a href=\"" + uri + "\" target=\"_blank\" title=\"Show picture\"><img class=\"searchButtonImg\" src=\"img/show.png\"></a>" +
                                  "   </div>" +
                                  "</div>"
@@ -113,9 +174,12 @@ var arrayImg = new Array();   //DELETE
    arrayImg[14] = "http://farm5.staticflickr.com/4150/4994274310_b5b1bd0f3c.jpg";
    arrayImg[15] = "http://farm5.staticflickr.com/4126/5063982949_c121769ab4.jpg"; 
  
-function printResults(imgSet) {
+function printResults(imgSet, start, end) {
+   if(start < 0 || end > imgSet.length)
+      return;
+   
    addRow();
-   for(i=0; i<imgSet.length; i++) {
+   for(i=start; i<end; i++) {
       if(i!=0 && i%COLUMNS==0) {
         addSeparator();
         addRow();
@@ -124,56 +188,24 @@ function printResults(imgSet) {
    }
 }
 
-printResults(arrayImg);  // DELETE
+//printResults(arrayImg, 1, 6);  // DELETE
 
 
 
 
 
 /////////////////////////////
-//    QUERY INFO HANDLER   //
+//    LOADING ANIMATION    //
 /////////////////////////////
-var queryDivHTML =   "<div title=\"Query type\">" +
-                     "  <img class=\"queryDivIcons\" src=\"img/search.png\" alt=\"type icon\">" +
-                     "  <span id=\"queryType\">&nbsp;</span>" +
-                     "</div>" +
-                     "<div title=\"Query\">" +
-                     "  <img class=\"queryDivIcons\" src=\"img/query.png\" alt=\"query icon\">" +
-                     "  <a id=\"queryImgLink\" href=\"#\" target=\"_blank\">&nbsp;</a>" +
-                     "  <span id=\"queryTxt\">&nbsp;</span>" +
-                     "</div>" +
-                     "<div title=\"Searching time\">" +
-                     "  <img class=\"queryDivIcons\" src=\"img/time.png\" alt=\"time icon\">" +
-                     "  <span id=\"queryTime\">-</span>" +
-                     "</div>" +
-                     "<div title=\"Number of results\">" +
-                     "  <img class=\"queryDivIcons\" src=\"img/results.png\" alt=\"result icon\">" +
-                     "  <span id=\"queryNumberOfResults\">-</span>" +
-                     "</div>"; 
- 
-/* It prints on the screen the query div, which contains, in order:
- *    1) the query type (visual or textual)
- *    2) the input query (link to the image or text)
- *    3) the query execution time
- *    4) the number of results.
+/* It shows the loading animation on the display.
  */
-function printQueryDiv() {
-   var queryDiv = $("#queryDiv");
-   queryDiv.append(queryDivHTML);
-   queryDiv.css("display", "block");
+function showLoadingAnimation() {
+   $("#loadingAnimationDiv").show();
 }
 
-/* It clears the query div.
- */
-function clearQueryDiv() {
-   var queryDiv = $("#queryDiv");
-   queryDiv.css("display", "none");
-   queryDiv.empty();
-}
 
-/* It set the query div field with the given value.
+/* It hides the loading animation.
  */
-function setQueryDivField(field, value) {
-   if(field == "queryImgLink") $(field).attr("href", value);
-   $(field).text(value);
+function hideLoadingAnimation() {
+   $("#loadingAnimationDiv").hide();
 }
