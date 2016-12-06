@@ -41,14 +41,13 @@
 }
 
 #loadingAnimationDiv {
-   margin-left: auto;
-	margin-right: auto;
-   width: 60px;
-   height: 60px;
    display: none;
 }
 
 #loadingAnimationDiv img {
    width: 60px;
    height: 60px;
+   position: absolute;
+   top: 50%;
+   left: 50%;
 }

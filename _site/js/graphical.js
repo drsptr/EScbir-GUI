@@ -9,8 +9,8 @@ $("ul.nav.navbar-nav a").click(  function() {
                                     $(this).parent().attr("class", "active");
                                  }
                               );
-
-
+                              
+                              
 
 
 
@@ -45,7 +45,7 @@ function setClusterState(state) {
 /////////////////////////////
 //    QUERY INFO HANDLER   //
 /////////////////////////////
-var queryDivHTML =   "<div title=\"Query type\">" +
+var queryDivHTML =   "<div title=\"Type\">" +
                      "  <img class=\"queryDivIcons\" src=\"img/search.png\" alt=\"type icon\">" +
                      "  <span id=\"queryType\">&nbsp;</span>" +
                      "</div>" +
@@ -86,11 +86,16 @@ function clearQueryDiv() {
 }
 
 
-/* It set the query div field with the given value.
+/* It set the query div field with the given value. The values are:
+ *       queryType                  ->       text     (VT)
+ *       queryImgLink               ->       href     (V)
+ *       queryTxt                   ->       text     (T)
+ *       queryTime                  ->       text     (VT)
+ *       queryNumberOfResults       ->       text     (VT)
  */
 function setQueryDivField(field, value) {
-   if(field == "queryImgLink") $(field).attr("href", value);
-   $(field).text(value);
+   if(field == "queryImgLink") $("#" + field).attr("href", value);
+   $("#" + field).text(value);
 }
 
 
@@ -115,15 +120,20 @@ function addImageElement(uri) {
    var imgId=uri.split("/").pop().split("_")[0];
 
    $(".row:last-child").append(  "<div class=\"col-" + DISPLAY + "-" + Math.floor(12/COLUMNS) + "\">" +
-                                 "   <div>" +
-                                 "      <img class=\"resultImg\" src=\"" + uri + "\">" +
-                                 "   </div>" +
-                                 "   <div>" +
-                                 "      <a href=\"#\" title=\"Visual similarity search\" onclick=\"visualSearch('" + imgId + "')\"><img class=\"searchButtonImg\" src=\"img/search.png\"></a>" +
-                                 "      <a href=\"" + uri + "\" target=\"_blank\" title=\"Show picture\"><img class=\"searchButtonImg\" src=\"img/show.png\"></a>" +
+                                 "  <div>" +
+                                 "     <img class=\"resultImg\" src=\"" + uri + "\">" +
+                                 "  </div>" +
+                                 "  <div>" +
+                                 "     <a href=\"#\" title=\"Visual similarity search\" onclick=\"visualSearch('" + imgId + "')\"><img class=\"searchButtonImg\" src=\"img/search.png\"></a>" +
+                                 "     <a href=\"" + uri + "\" target=\"_blank\" title=\"Show picture\"><img class=\"searchButtonImg\" src=\"img/show.png\"></a>" +
                                  "   </div>" +
                                  "</div>"
                               );
+   
+   $(document).ready(   function() {
+                           $('[data-toggle="tooltip"]').tooltip();   
+                        }
+                  );
 }
 
 
@@ -154,26 +164,6 @@ function clearResults() {
 /* Given an array containing a set of URI, i.e. the result set, it fills the results' grid with all
  * the elements belonging to the set. It is used when a visual, a random or a textual search is performed.
  */
-var arrayImg = new Array();   //DELETE
-   arrayImg[0] = "http://farm5.staticflickr.com/4137/4888431878_5470a5578b.jpg";
-   arrayImg[1] = "http://farm3.staticflickr.com/2872/13266135434_c2d719f79c.jpg";
-   arrayImg[2] = "http://farm9.staticflickr.com/8231/8570711349_8c98474b68.jpg";
-   arrayImg[3] = "http://farm5.staticflickr.com/4052/4338993037_f673938de1.jpg";
-   arrayImg[4] = "http://farm7.staticflickr.com/6002/5970121149_6203ed5514.jpg";
-   arrayImg[5] = "http://farm2.staticflickr.com/1258/1134707013_7cfc6718ef.jpg";
-   
-   arrayImg[6] = "http://farm1.staticflickr.com/42/76425570_0ddcef5d8f.jpg";
-   arrayImg[7] = "http://farm5.staticflickr.com/4016/5074023593_f7d5c2b913.jpg";
-   arrayImg[8] = "http://farm9.staticflickr.com/8010/7368127674_e9b97c8014.jpg";
-   arrayImg[9] = "http://farm5.staticflickr.com/4086/5079866272_0038ecaffb.jpg";
-   arrayImg[10] = "http://farm9.staticflickr.com/8444/7844523280_10e0b8ae42.jpg";
-   arrayImg[11] = "http://farm6.staticflickr.com/5066/5829328836_3c7fc463cf.jpg";
-   
-   arrayImg[12] = "http://farm7.staticflickr.com/6240/6319960852_aa2fc75fdf.jpg";
-   arrayImg[13] = "http://farm1.staticflickr.com/88/270804036_688e6c6b2b.jpg";
-   arrayImg[14] = "http://farm5.staticflickr.com/4150/4994274310_b5b1bd0f3c.jpg";
-   arrayImg[15] = "http://farm5.staticflickr.com/4126/5063982949_c121769ab4.jpg"; 
- 
 function printResults(imgSet, start, end) {
    if(start < 0 || end > imgSet.length)
       return;
@@ -187,8 +177,6 @@ function printResults(imgSet, start, end) {
       addImageElement(imgSet[i]);
    }
 }
-
-//printResults(arrayImg, 1, 6);  // DELETE
 
 
 

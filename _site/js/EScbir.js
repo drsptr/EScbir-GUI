@@ -10,6 +10,9 @@ var FIELD_IMG	= "encoded_features";
 var FIELD_TXT 	= "tags";
 var TOT_DOCS;
 
+var RANDOM_RESULT_SIZE = 24;
+var RESULT_SIZE = 120;
+
 
 
 
@@ -36,12 +39,33 @@ var resultArray = [];
 
 
 
+/////////////////////////////
+//    COMMON FUNCTIONS     //
+/////////////////////////////
+/* It is called whenever a visual or textual search has been performed.
+ * Basically, it prints out the resulting images on the screen.
+ */
+function afterSearchDone(response) {
+   var hits = response.hits.hits;
+                     
+   for(var i=0; i<hits.length; i++)
+      resultArray.push(hits[i].fields[FIELD_URI][0]);
+                                    
+   setQueryDivField("queryTime", eval(response.took/1000) + " s");
+   setQueryDivField("queryNumberOfResults", hits.length);
+                                    
+   hideLoadingAnimation();
+                                    
+   printResults(resultArray, 0, RESULT_SIZE);
+}
+
+
+
+
  
 /////////////////////////////
 //      RANDOM SEARCH      //
 /////////////////////////////
-var RANDOM_RESULT_SIZE = 18;
-
 /* It picks 'RANDOM_RESULT_SIZE' images from the index, in a random way,
  * and shows them on the display. This function is called either when the
  * page is loaded for the 1st time, either when the user clicks on the
@@ -66,7 +90,7 @@ function randomSearch() {
                                        function_score:{
                                                          functions:  [
                                                                         {
-                                                                           random_score: {seed: 0/*rndSeed*/}
+                                                                           random_score: {seed: 5/*rndSeed*/}
                                                                         }
                                                                      ]
                                                       }
@@ -103,20 +127,68 @@ function visualSearch(docId) {
    clearResults();
    
    printQueryDiv();
-   // -> setQueryDivField
+   setQueryDivField("queryType", "Visual search");
+   showLoadingAnimation();
+   
+   client.get(
+               {
+                  index: INDEX_NAME,
+                  type: TYPE_NAME,
+                  id: docId,
+                  _source: FIELD_IMG,
+                  fields: FIELD_URI
+               },
+               function(error, response) {
+                  setQueryDivField("queryImgLink", response.fields[FIELD_URI][0]);
+                  var toSearch = response._source["encoded_features"];
+                  
+                  client.search(
+                                 {
+                                    index: INDEX_NAME,
+                                    type: TYPE_NAME,
+                                    q: FIELD_IMG + ":" + toSearch,
+                                    searchType: "query_then_fetch",
+                                    size: RESULT_SIZE,
+                                    fields: FIELD_URI
+                                 },
+                                 function(error, response) {
+                                    afterSearchDone(response);
+                                 }
+                              );
+               }
+            );
 }
-                     
-function get(indexName, typeName, docId) {
-	alert("get");
-	this.client.get(	{
-							index: INDEX_NAME,
-							type: TYPE_NAME,
-							id: 4888431878
-						}, 
-						function (error, response) {
-							alert(JSON.stringify(response._source, null, "  "));
-						}
-					);
+
+
+
+
+
+/////////////////////////////
+//     TEXTUAL SEARCH      //
+/////////////////////////////
+function textualSearch(queryTxt) {
+   resultArray.clear();
+   clearQueryDiv();
+   clearResults();
+   
+   printQueryDiv();
+   setQueryDivField("queryType", "Textual search");
+   setQueryDivField("queryTxt", queryTxt);
+   showLoadingAnimation();
+   
+   client.search(
+                  {
+                     index: INDEX_NAME,
+                     type: TYPE_NAME,
+                     q: FIELD_TXT + ":" + queryTxt,
+                     searchType: "query_then_fetch",
+                     size: RESULT_SIZE,
+                     fields: FIELD_URI
+                  },
+                  function(error, response) {
+                     afterSearchDone(response);
+                  }
+               );
 }
 
 

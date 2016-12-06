@@ -19,6 +19,7 @@
       <div id="mainDiv" class="container">
          <!-- Navigation Bar-->
          <nav class="navbar navbar-default">
+            <!-- Navbar header -->
             <div class="navbar-header">
                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
                   <span class="icon-bar"></span>
@@ -27,12 +28,26 @@
                </button>
                <a href="#" class="navbar-brand"><img src="http://www.tiragraffi.it/wp-content/uploads/2014/06/LEGO_Logo.jpg" width="30px" height="30px" alt="logo" class="img-circle"></a>
             </div>
+            <!-- Navbar body -->
             <div class="collapse navbar-collapse" id="mainNavBar">
+               <!-- Navbar left buttons -->
                <ul class="nav navbar-nav">
                   <li><a id="visualSearchButton" href="#">Visual search</a></li>
                   <li><a id="textualSearchButton" href="#">Textual search</a></li>
                   <li class="active"><a id="randomSearchButton" href="#">Random search</a></li>
                </ul>
+               <!-- Navbar search bar -->
+               <form class="navbar-form navbar-left">
+                  <div class="input-group">
+                     <input type="text" class="form-control" placeholder="Search">
+                     <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit">
+                           <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                     </div>
+                  </div>
+               </form>
+               <!-- Navbar right buttons -->
                <div class="navbar-right" title="Cluster's state"><span id="clusterStateSpan" class="label label-success">Green</span></div>
             </div>
          </nav>
@@ -49,9 +64,6 @@
             <img src="img/loading.gif" alt="loading image">
          </div>
       </div>
-      <div id="respDiv"></div>
-      <input type="button" onclick="showLoadingAnimation()" value="show">
-      <input type="button" onclick="hideLoadingAnimation()" value="hide">
       <script type="text/javascript" src="js/graphical.js"></script>
       <script type="text/javascript" src="js/EScbir.js"></script>
    <body>
