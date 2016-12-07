@@ -11,7 +11,7 @@ var FIELD_TXT 	= "tags";
 var TOT_DOCS;
 
 var RANDOM_RESULT_SIZE = 24;
-var RESULT_SIZE = 100;
+var RESULT_SIZE = 120;
 
 
 
@@ -146,10 +146,17 @@ function visualSearch(docId) {
                                  {
                                     index: INDEX_NAME,
                                     type: TYPE_NAME,
-                                    q: FIELD_IMG + ":" + toSearch,
-                                    searchType: "query_then_fetch",
+                                    searchType: "dfs_query_then_fetch",
                                     size: RESULT_SIZE,
-                                    fields: FIELD_URI
+                                    fields: FIELD_URI,
+                                    body: {
+                                             query:{
+                                                      "query_string":{
+                                                                        "fields":[FIELD_IMG],
+                                                                        "query": toSearch
+                                                                     }
+                                                   }
+                                          }
                                  },
                                  function(error, response) {
                                     afterSearchDone(response);
@@ -181,7 +188,7 @@ function textualSearch(queryTxt) {
                      index: INDEX_NAME,
                      type: TYPE_NAME,
                      q: FIELD_TXT + ":" + queryTxt,
-                     searchType: "query_then_fetch",
+                     searchType: "dfs_query_then_fetch",
                      size: RESULT_SIZE,
                      fields: FIELD_URI
                   },
