@@ -9,6 +9,26 @@ $("ul.nav.navbar-nav a").click(  function() {
                                     $(this).parent().attr("class", "active");
                                  }
                               );
+
+                              
+/* It sets the search bar visible when the 'visualSearchButton' is pressed.
+ */
+$("#visualSearchButton").click(displaySearchBar);
+
+
+/* It sets the search bar visible when the 'textualSearchButton' is pressed.
+ */
+$("#textualSearchButton").click(displaySearchBar);
+
+
+/* It sets the search bar hidden when the 'visualSearchButton' is pressed.
+ */
+$("#randomSearchButton").click(hideSearchBar);
+
+
+/* It sets the on click event on the button in the search bar.
+ */
+$("#searchBarForm button").click(navBarSearch);
                               
                               
 
@@ -165,11 +185,11 @@ function clearResults() {
  * the elements belonging to the set. It is used when a visual, a random or a textual search is performed.
  */
 function printResults(imgSet, start, end) {
-   if(start < 0 || end > imgSet.length)
+   if(start < 0)
       return;
    
    addRow();
-   for(i=start; i<end; i++) {
+   for(i=start; i<end && i<imgSet.length; i++) {
       if(i!=0 && i%COLUMNS==0) {
         addSeparator();
         addRow();
@@ -196,4 +216,41 @@ function showLoadingAnimation() {
  */
 function hideLoadingAnimation() {
    $("#loadingAnimationDiv").hide();
+}
+
+
+
+
+
+/////////////////////////////
+//        SEARCH BAR       //
+/////////////////////////////
+/* It shows the search bar in the navigation bar.
+ */
+function displaySearchBar() {
+   var placeholder = ($("#visualSearchButton").parent().hasClass("active"))? "Image ID" : "Search";
+   
+   $("#searchBarForm input").attr("placeholder", placeholder);
+   $("#searchBarForm input").val("");
+   $("#searchBarForm").show(1000);
+}
+
+
+/* It hides the search bar in the navigation bar.
+ */
+function hideSearchBar() {
+   $("#searchBarForm").hide(1000);
+}
+
+
+/* It is called whenever the search button in the navigation bar is clicked.
+ * Then, it executes a visual or a textual search according to the selected tab.
+ */
+function navBarSearch() {
+   var query = $("#searchBarForm input").val();
+   
+   if($("#visualSearchButton").parent().hasClass("active"))
+      visualSearch(query);
+   else
+      textualSearch(query);
 }

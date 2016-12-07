@@ -11,7 +11,7 @@ var FIELD_TXT 	= "tags";
 var TOT_DOCS;
 
 var RANDOM_RESULT_SIZE = 24;
-var RESULT_SIZE = 120;
+var RESULT_SIZE = 100;
 
 
 
@@ -140,7 +140,7 @@ function visualSearch(docId) {
                },
                function(error, response) {
                   setQueryDivField("queryImgLink", response.fields[FIELD_URI][0]);
-                  var toSearch = response._source["encoded_features"];
+                  var toSearch = response._source[FIELD_IMG];
                   
                   client.search(
                                  {
