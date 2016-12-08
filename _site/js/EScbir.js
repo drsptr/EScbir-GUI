@@ -90,7 +90,7 @@ function randomSearch() {
                                        function_score:{
                                                          functions:  [
                                                                         {
-                                                                           random_score: {seed: 5/*rndSeed*/}
+                                                                           random_score: {seed: rndSeed}
                                                                         }
                                                                      ]
                                                       }
