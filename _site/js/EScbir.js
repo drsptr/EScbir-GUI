@@ -113,7 +113,7 @@ function randomSearch() {
                                        function_score:{
                                                          functions:  [
                                                                         {
-                                                                           random_score: {seed: 21/*rndSeed*/}
+                                                                           random_score: {seed: rndSeed}
                                                                         }
                                                                      ]
                                                       }
@@ -144,6 +144,9 @@ $("#randomSearchButton").click(randomSearch);
 /////////////////////////////
 //      VISUAL SEARCH      //
 /////////////////////////////
+/* It performs a visual similarity search, using as input the image with id 'docId',
+ * given as input to the function. The document with id 'docId' MUST exist in the index.
+ */
 function visualSearch(docId) {
    resultArray.clear();
    clearQueryDiv();
@@ -191,12 +194,41 @@ function visualSearch(docId) {
 }
 
 
+/* It first checks if the image with id 'docId' exists in the index, then, if it is the
+ * case, it performs a standard visual similarity search. It is used to prevent errors.
+ */
+function visualSearchWithControl(docId) {
+   client.exists(
+                  {
+                     index: INDEX_NAME,
+                     type: TYPE_NAME,
+                     id: docId
+                  },
+                  function(error, exists) {
+                     if(exists === true)
+                        visualSearch(docId);
+                     else {
+                        resultArray.clear();
+                        clearQueryDiv();
+                        clearResults();
+                        clearPagination();
+                        
+                        printQueryDiv();
+                        setQueryDivField("queryType", "Visual search");
+                     }
+                  }
+                );
+}
+
+
 
 
 
 /////////////////////////////
 //     TEXTUAL SEARCH      //
 /////////////////////////////
+/* It performs a textual search using as input the variable given to the function.
+ */
 function textualSearch(queryTxt) {
    resultArray.clear();
    clearQueryDiv();

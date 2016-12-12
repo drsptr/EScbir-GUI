@@ -34,8 +34,10 @@ $("#searchBarForm button").click(navBarSearch);
 /* It sets the keydown event on input in the search bar when the 'Enter' button is pressed.
  */
 $("#searchBarForm input").keydown(  function() {
-                                       if(event.keyCode == 13)
+                                       if(event.keyCode == 13) {
                                           navBarSearch();
+                                          $(this).blur();
+                                       }
                                     }
                                  );
                               
@@ -68,10 +70,10 @@ function setClusterState(state) {
 }
 
 
-function setDocsCount(dCount) {
+/* It sets the document count equal to the that given as input.
+ */
+function setDocsCount(docsCount) {
    var txt;
-   
-   docsCount = Number("100000");
    
    if(docsCount >= 1000000) 
       txt = (docsCount/1000000).toFixed(1).replace(/\.0$/, '') + "M";
@@ -81,7 +83,7 @@ function setDocsCount(dCount) {
       txt = docsCount;
    
    $("#docsCountSpan").text(txt);
-   $("#docsCountSpan").attr("title", "Document count: " + docsCount);
+   $("#docsCountSpan").attr("title", "Document count: " + docsCount.toLocaleString('us-US'));
 }
                       
 
@@ -169,7 +171,7 @@ function addImageElement(uri) {
                                  "  <div>" +
                                  "     <img class=\"resultImg\" src=\"" + uri + "\">" +
                                  "  </div>" +
-                                 "  <div>" +
+                                 "  <div id=\"searchIconsDiv\">" +
                                  "     <a href=\"#\" title=\"Visual similarity search\" onclick=\"visualSearch('" + imgId + "')\"><img class=\"searchButtonImg\" src=\"img/search.png\"></a>" +
                                  "     <a href=\"" + uri + "\" target=\"_blank\" title=\"Show picture\"><img class=\"searchButtonImg\" src=\"img/show.png\"></a>" +
                                  "   </div>" +
@@ -278,7 +280,7 @@ function navBarSearch() {
    var query = $("#searchBarForm input").val();
    
    if($("#visualSearchButton").parent().hasClass("active"))
-      visualSearch(query);
+      visualSearchWithControl(query);
    else
       textualSearch(query);
 }
