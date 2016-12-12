@@ -18,6 +18,10 @@
 }
 
 .label {
+   cursor: default;
+}
+
+#refreshStateSpan {
    cursor: pointer;
 }
 
@@ -59,4 +63,8 @@
 .navbar-brand img {
    width: 20px;
    height: 20px;
+}
+
+.navbar-right span {
+   margin-right: 5px;
 }

@@ -48,7 +48,15 @@
                   </div>
                </div>
                <!-- Navbar right buttons -->
-               <div class="navbar-right" title="Cluster's state"><span id="clusterStateSpan" class="label label-success">Green</span></div>
+               <div class="navbar-right" title="Document count">
+                  <span id="docsCountSpan" class="label label-info">100M+&nbsp;</span>
+               </div>
+               <div class="navbar-right" title="Cluster state">
+                  <span id="clusterStateSpan" class="">&nbsp;</span>
+               </div>
+               <div class="navbar-right" title="Refresh">
+                  <span id="refreshStateSpan" class="glyphicon glyphicon-refresh" aria-hidden="true" onclick="getStateInfo();"></span>
+               </div>
             </div>
          </nav>
          <!-- Query -->
@@ -62,6 +70,9 @@
          <!-- Loading Animation -->
          <div id="loadingAnimationDiv">
             <img src="img/loading.gif" alt="loading image">
+         </div>
+         <!-- Pagination -->
+         <div id="paginationDiv">
          </div>
       </div>
       <script type="text/javascript" src="js/graphical.js"></script>

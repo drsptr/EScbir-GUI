@@ -26,9 +26,18 @@ $("#textualSearchButton").click(displaySearchBar);
 $("#randomSearchButton").click(hideSearchBar);
 
 
-/* It sets the on click event on the button in the search bar.
+/* It sets the click event on the button in the search bar.
  */
 $("#searchBarForm button").click(navBarSearch);
+
+
+/* It sets the keydown event on input in the search bar when the 'Enter' button is pressed.
+ */
+$("#searchBarForm input").keydown(  function() {
+                                       if(event.keyCode == 13)
+                                          navBarSearch();
+                                    }
+                                 );
                               
                               
 
@@ -57,11 +66,28 @@ function setClusterState(state) {
    
    span.text(state);
 }
-                              
+
+
+function setDocsCount(dCount) {
+   var txt;
+   
+   docsCount = Number("100000");
+   
+   if(docsCount >= 1000000) 
+      txt = (docsCount/1000000).toFixed(1).replace(/\.0$/, '') + "M";
+   else if (docsCount >= 1000)
+      txt = (docsCount/1000).toFixed(1).replace(/\.0$/, '') + "K";
+   else
+      txt = docsCount;
+   
+   $("#docsCountSpan").text(txt);
+   $("#docsCountSpan").attr("title", "Document count: " + docsCount);
+}
+                      
 
 
 
-                              
+                             
 /////////////////////////////
 //    QUERY INFO HANDLER   //
 /////////////////////////////
@@ -229,10 +255,12 @@ function hideLoadingAnimation() {
  */
 function displaySearchBar() {
    var placeholder = ($("#visualSearchButton").parent().hasClass("active"))? "Image ID" : "Search";
+   var searchInput = $("#searchBarForm input:first-of-type");
    
-   $("#searchBarForm input").attr("placeholder", placeholder);
-   $("#searchBarForm input").val("");
+   searchInput.attr("placeholder", placeholder);
+   searchInput.val("");
    $("#searchBarForm").show(1000);
+   searchInput.focus();
 }
 
 
@@ -253,4 +281,45 @@ function navBarSearch() {
       visualSearch(query);
    else
       textualSearch(query);
+}
+
+
+
+
+
+/////////////////////////////
+//       PAGINATION        //
+/////////////////////////////
+var ROWS_PER_PAGE = 7;
+
+
+/* It prints the pagination.
+ */
+function printPagination(imgSet) {
+   var numberOfPages = Math.ceil(imgSet.length/(ROWS_PER_PAGE*COLUMNS));
+   
+   var htmlTxt = "<ul class=\"pagination pagination-sm\">";
+                 
+   
+   for(var i=0; i<numberOfPages; i++)
+      htmlTxt +=  "<li>" + 
+                     "<a href=\"#\" onclick=\"clearResults(); printResults(resultArray, " + i*(ROWS_PER_PAGE*COLUMNS) + ", " + (i+1)*(ROWS_PER_PAGE*COLUMNS) + ");\">" + (i+1) + "</a>" +
+                  "</li>";
+   
+   htmlTxt += "</ul>";
+   $("#paginationDiv").append(htmlTxt);
+   
+   $("#paginationDiv li").click(
+                                 function() {
+                                    $("#paginationDiv li").removeAttr("class");
+                                    $(this).attr("class", "active");
+                                 }
+                            );
+}
+
+
+/* It clears the pagination div.
+ */
+function clearPagination() {
+   $("#paginationDiv").empty();
 }

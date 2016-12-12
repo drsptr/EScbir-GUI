@@ -8,7 +8,6 @@ var TYPE_NAME	= "yfcc100m";
 var FIELD_URI 	= "uri";
 var FIELD_IMG	= "encoded_features";
 var FIELD_TXT 	= "tags";
-var TOT_DOCS;
 
 var RANDOM_RESULT_SIZE = 24;
 var RESULT_SIZE = 120;
@@ -56,13 +55,36 @@ function afterSearchDone(response) {
                                     
    hideLoadingAnimation();
                                     
-   printResults(resultArray, 0, RESULT_SIZE);
+   printPagination(resultArray);
+   $(".pagination li:first-child a:first-child").click();
+}
+
+
+/* It gets the document count for the given index and type; then, it asserts the cluster state.
+ */
+function getStateInfo() {
+   client.count(  {
+                     index: INDEX_NAME,
+                     type: TYPE_NAME
+                  },
+                  function(error, response) {
+                     setDocsCount(response.count);
+                  }
+               );
+
+   client.cluster.health(   {
+                              index: INDEX_NAME
+                           },
+                           function(error, response) {
+                              setClusterState(response["status"]);
+                           }
+                        );
 }
 
 
 
 
- 
+
 /////////////////////////////
 //      RANDOM SEARCH      //
 /////////////////////////////
@@ -77,6 +99,7 @@ function randomSearch() {
    resultArray.clear();
    clearQueryDiv();
    clearResults();
+   clearPagination();
    showLoadingAnimation();
    
    client.search(    
@@ -90,7 +113,7 @@ function randomSearch() {
                                        function_score:{
                                                          functions:  [
                                                                         {
-                                                                           random_score: {seed: rndSeed}
+                                                                           random_score: {seed: 21/*rndSeed*/}
                                                                         }
                                                                      ]
                                                       }
@@ -125,6 +148,7 @@ function visualSearch(docId) {
    resultArray.clear();
    clearQueryDiv();
    clearResults();
+   clearPagination();
    
    printQueryDiv();
    setQueryDivField("queryType", "Visual search");
@@ -177,6 +201,7 @@ function textualSearch(queryTxt) {
    resultArray.clear();
    clearQueryDiv();
    clearResults();
+   clearPagination();
    
    printQueryDiv();
    setQueryDivField("queryType", "Textual search");
@@ -205,28 +230,10 @@ function textualSearch(queryTxt) {
 /////////////////////////////
 //         STARTUP         //
 /////////////////////////////
-/* It gets the document count for the given index and type.
+/* It gets the number of documents and the clusterState.
  */
-client.count(  {
-                  index: INDEX_NAME,
-                  type: TYPE_NAME
-               },
-               function(error, response) {
-                  TOT_DOCS = response.count;
-               }
-            );
+getStateInfo();
 
-            
-/* It gets the cluster state and set it.
- */
-client.cluster.health(   {
-                           index: INDEX_NAME
-                        },
-                        function(error, response) {
-                           setClusterState(response["status"]);
-                        }
-                     );
-                     
 
 /* It performs a random search on the startup.
  */
