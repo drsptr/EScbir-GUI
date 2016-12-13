@@ -142,7 +142,11 @@ function clearQueryDiv() {
  *       queryNumberOfResults       ->       text     (VT)
  */
 function setQueryDivField(field, value) {
-   if(field == "queryImgLink") $("#" + field).attr("href", value);
+   if(field == "queryImgLink") { 
+      $("#" + field).attr("href", value); 
+      $("#" + field).css("display", "inline");
+   }
+  
    $("#" + field).text(value);
 }
 
@@ -171,21 +175,16 @@ function addImageElement(uri) {
                                  "  <div>" +
                                  "     <img class=\"resultImg\" src=\"" + uri + "\">" +
                                  "  </div>" +
-                                 "  <div id=\"searchIconsDiv\">" +
+                                 "  <div class=\"searchIconsDiv\">" +
                                  "     <a href=\"#\" title=\"Visual similarity search\" onclick=\"visualSearch('" + imgId + "')\"><img class=\"searchButtonImg\" src=\"img/search.png\"></a>" +
                                  "     <a href=\"" + uri + "\" target=\"_blank\" title=\"Show picture\"><img class=\"searchButtonImg\" src=\"img/show.png\"></a>" +
                                  "   </div>" +
                                  "</div>"
                               );
-   
-   $(document).ready(   function() {
-                           $('[data-toggle="tooltip"]').tooltip();   
-                        }
-                  );
 }
 
 
-/* Utility function. It is used by the showResults().
+/* Utility function. It is used by the printResults().
  * It adds a new row to the results' grid.
  */
 function addRow() {
@@ -193,7 +192,7 @@ function addRow() {
 }
 
 
-/* Utility function. It is used by the showResults().
+/* Utility function. It is used by the printResults().
  * It adds a space separator between two rows.
  */
 function addSeparator() {
@@ -201,12 +200,34 @@ function addSeparator() {
 }
 
 
-/* Utility function. It is used by the showResults().
+/* Utility function. It is used by the printResults().
  * It clears the whole results' grid, deleting all the elements.
  */
 function clearResults() {
    $("#resultImagesDiv").empty();
 }   
+
+
+/* Utility function. It is used by the printResults().
+ * It creates a sliding animation with the 'searchIconsDiv'.
+ */
+function slideToRight() {
+   var wdt = $(this).find(".resultImg").css("width");
+   $(this).find(".resultImg").css("cursor", "default");
+   $(this).find(".searchIconsDiv").animate({width: wdt});
+   $(this).find(".searchIconsDiv img").show();
+}
+
+
+/* Utility function. It is used by the printResults().
+ * It creates a sliding animation with the 'searchIconsDiv'.
+ * It is the dual function of slideToRight().
+ */
+function slideToLeft() {
+   $(this).find(".resultImg").css("cursor", "pointer");
+   $(this).find(".searchIconsDiv").animate({width: 0});
+   $(this).find(".searchIconsDiv img").hide();
+}
 
 
 /* Given an array containing a set of URI, i.e. the result set, it fills the results' grid with all
@@ -224,6 +245,10 @@ function printResults(imgSet, start, end) {
       }
       addImageElement(imgSet[i]);
    }
+   
+   $(".col-" + DISPLAY + "-" + Math.floor(12/COLUMNS)).click(slideToRight);
+                        
+   $(".col-" + DISPLAY + "-" + Math.floor(12/COLUMNS)).mouseleave(slideToLeft);
 }
 
 
