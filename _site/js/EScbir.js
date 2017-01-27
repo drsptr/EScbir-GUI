@@ -3,11 +3,12 @@
 /////////////////////////////
 var HOST = "localhost";
 var PORT = 9200;
+var SHARDS = 16;
 var INDEX_NAME	= "cbir";
 var TYPE_NAME	= "yfcc100m";
 var FIELD_URI 	= "uri";
-var FIELD_IMG	= "encoded_features";
-var FIELD_TXT 	= "tags";
+var FIELD_IMG	= "deep";
+var FIELD_TXT 	= "txt";
 
 var RANDOM_RESULT_SIZE = 24;
 var RESULT_SIZE = 120;
@@ -95,6 +96,7 @@ function getStateInfo() {
  */
 function randomSearch() {
    var rndSeed = getSeed();
+   var rndShard = random(SHARDS);
    
    resultArray.clear();
    clearQueryDiv();
@@ -108,6 +110,7 @@ function randomSearch() {
                      type: TYPE_NAME,
                      size: RANDOM_RESULT_SIZE,
                      fields: FIELD_URI,
+                     preference: "_shards:" + rndShard,
                      body: {
                               query:{
                                        function_score:{
