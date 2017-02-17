@@ -5,11 +5,13 @@
  * on the navbar, its color becames darker.
  */
 $("ul.nav.navbar-nav a").click(  function() {
-                                    $("ul.nav.navbar-nav li").removeAttr("class");
-                                    $(this).parent().attr("class", "active");
+                                    if($(this).attr("class")!="dropdownItem") {
+                                       $("ul.nav.navbar-nav li").removeAttr("class");
+                                       $(this).parent().attr("class", "active");
+                                    }
                                  }
-                              );
-
+                              );                        
+                              
                               
 /* It sets the search bar visible when the 'visualSearchButton' is pressed.
  */
@@ -40,7 +42,16 @@ $("#searchBarForm input").keydown(  function() {
                                        }
                                     }
                                  );
-                              
+
+                                 
+/* It sets the click event on the 'uploadButton'.
+ */
+$("#uploadButton").click(   function() {
+                              hideSearchBar();
+                              $("#fileInput").click();
+                           }
+                        );
+                                 
                               
 
 
@@ -137,14 +148,21 @@ function clearQueryDiv() {
 /* It set the query div field with the given value. The values are:
  *       queryType                  ->       text     (VT)
  *       queryImgLink               ->       href     (V)
+ *       uploadedImg                ->       href     (V)
  *       queryTxt                   ->       text     (T)
  *       queryTime                  ->       text     (VT)
  *       queryNumberOfResults       ->       text     (VT)
  */
 function setQueryDivField(field, value) {
-   if(field == "queryImgLink") { 
-      $("#" + field).attr("href", value); 
-      $("#" + field).css("display", "inline");
+   
+   if(field == "queryImgLink" || field == "uploadedImg") { 
+      $("#queryImgLink").attr("href", value); 
+      $("#queryImgLink").css("display", "inline");
+   }
+  
+   if(field == "uploadedImg") {
+      $("#queryImgLink").text("Uploaded image");
+      return;
    }
   
    $("#" + field).text(value);
@@ -281,7 +299,7 @@ function hideLoadingAnimation() {
 /* It shows the search bar in the navigation bar.
  */
 function displaySearchBar() {
-   var placeholder = ($("#visualSearchButton").parent().hasClass("active"))? "Image ID" : "Search";
+   var placeholder = ($("#textualSearchButton").parent().hasClass("active"))? "Search" : "Image ID";
    var searchInput = $("#searchBarForm input:first-of-type");
    
    searchInput.attr("placeholder", placeholder);
@@ -304,10 +322,10 @@ function hideSearchBar() {
 function navBarSearch() {
    var query = $("#searchBarForm input").val();
    
-   if($("#visualSearchButton").parent().hasClass("active"))
-      visualSearchWithControl(query);
-   else
+   if($("#textualSearchButton").parent().hasClass("active"))
       textualSearch(query);
+   else
+      visualSearchWithControl(query);
 }
 
 

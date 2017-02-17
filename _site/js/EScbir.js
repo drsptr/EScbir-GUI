@@ -1,6 +1,7 @@
 /////////////////////////////
 //       ES SETTINGS       //
 /////////////////////////////
+var PROTOCOL = "http";
 var HOST = "localhost";
 var PORT = 9200;
 var SHARDS = 16;
@@ -244,20 +245,82 @@ function textualSearch(queryTxt) {
    showLoadingAnimation();
    
    client.search(
-                  {
-                     index: INDEX_NAME,
-                     type: TYPE_NAME,
-                     q: FIELD_TXT + ":" + queryTxt,
-                     searchType: "dfs_query_then_fetch",
-                     size: RESULT_SIZE,
-                     fields: FIELD_URI
-                  },
-                  function(error, response) {
-                     afterSearchDone(response);
-                  }
-               );
+                                 {
+                                    index: INDEX_NAME,
+                                    type: TYPE_NAME,
+                                    searchType: "dfs_query_then_fetch",
+                                    size: RESULT_SIZE,
+                                    fields: FIELD_URI,
+                                    body: {
+                                             query:{
+                                                      "query_string":{
+                                                                        "fields":[FIELD_TXT],
+                                                                        "query": queryTxt
+                                                                     }
+                                                   }
+                                          }
+                                 },
+                                 function(error, response) {
+                                    afterSearchDone(response);
+                                 }
+                              );
 }
 
+
+
+
+
+/////////////////////////////
+//      UPLOAD IMAGE       //
+/////////////////////////////
+$("#fileInput").change( function() {
+                           if (this.files && this.files[0]) {
+                              var reader = new FileReader();
+                             
+                              reader.onload = function(e) {
+                                 var base64Image = e.target.result;
+                                 
+                                 resultArray.clear();
+                                 clearQueryDiv();
+                                 clearResults();
+                                 clearPagination();
+                                 printQueryDiv();
+                                 setQueryDivField("queryType", "Visual search");
+                                 setQueryDivField("uploadedImg", base64Image);
+                                 showLoadingAnimation();
+                                 
+                                 $.post(PROTOCOL +  "://" + HOST + ":" + PORT + "/_encode", '{"img" : "' + base64Image.replace(/^data:image\/(png|jpg|jpeg);base64,/, "") + '"}', function( data ) {
+                                                                                                         var toSearch = data.txt;
+                                                                                                         
+                                                                                                         client.search(
+                                                                                                                        {
+                                                                                                                           index: INDEX_NAME,
+                                                                                                                           type: TYPE_NAME,
+                                                                                                                           searchType: "dfs_query_then_fetch",
+                                                                                                                           size: RESULT_SIZE,
+                                                                                                                           fields: FIELD_URI,
+                                                                                                                           body: {
+                                                                                                                                    query:{
+                                                                                                                                             "query_string":{
+                                                                                                                                                               "fields":[FIELD_IMG],
+                                                                                                                                                               "query": toSearch
+                                                                                                                                                            }
+                                                                                                                                          }
+                                                                                                                                 }
+                                                                                                                        },
+                                                                                                                        function(error, response) {
+                                                                                                                           afterSearchDone(response);
+                                                                                                                        }
+                                                                                                                     );
+                                                                                                      }
+                                 );  
+                              };
+                                 
+                              reader.readAsDataURL(this.files[0]);
+                           }
+                        }
+                       
+                     );
 
 
 

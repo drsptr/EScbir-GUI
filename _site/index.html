@@ -32,7 +32,13 @@
             <div class="collapse navbar-collapse" id="mainNavBar">
                <!-- Navbar left buttons -->
                <ul class="nav navbar-nav">
-                  <li><a id="visualSearchButton" href="#">Visual search</a></li>
+                  <li class="dropdown">
+                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visual Search<span class="caret"></span></a>
+                     <ul class="dropdown-menu">
+                        <li><a class="dropdownItem" id="visualSearchButton" href="#">Image ID</a></li>
+                        <li><a class="dropdownItem" id="uploadButton" href="#">Upload image</a></li>
+                     </ul>
+                  </li>
                   <li><a id="textualSearchButton" href="#">Textual search</a></li>
                   <li class="active"><a id="randomSearchButton" href="#">Random search</a></li>
                </ul>
@@ -59,6 +65,8 @@
                </div>
             </div>
          </nav>
+         <!-- Uploaded image -->
+         <input id="fileInput" type="file">
          <!-- Query -->
          <div id="queryDiv">
          </div>
